@@ -1,11 +1,14 @@
 <template>
-    <div>
-        <h1>Examen 3P, dios no ampare</h1>
-    </div>
+    <Clock />
 </template>
 
 <script>
+import Clock from './Clock.vue';
+
+
 export default {
-    name: 'App',
+    components: {
+        Clock,
+    },
 };
 </script>
