@@ -13,7 +13,6 @@ class Clock extends Subject
         $this->currentTime = Carbon::now();
     }
 
-    // Simula el paso del tiempo
     public function tick()
     {
         $this->currentTime->addSecond();

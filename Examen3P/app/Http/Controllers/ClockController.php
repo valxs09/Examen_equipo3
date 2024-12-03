@@ -2,31 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Clock;
-use App\Models\CityClock;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ClockController extends Controller
 {
-    public function getTime()
+    public function getTime(Request $request)
     {
-        // Crear el reloj (sujeto)
-        $clock = new Clock();
+        $timezone = $request->input('timezone', 'UTC');
+        $city = $request->input('city', 'Unknown City');
 
-        // Crear observadores (ciudades)
-        $madrid = new CityClock('Madrid', 'Europe/Madrid');
-        $ny = new CityClock('New York', 'America/New_York');
-
-        // Registrar los observadores al reloj
-        $clock->attach($madrid);
-        $clock->attach($ny);
-
-        // Simular el paso del tiempo
-        $clock->tick();
-
-        // Devolver las horas de las ciudades
-        return response()->json([
-            $madrid->getTime(),
-            $ny->getTime(),
-        ]);
+        try {
+            $current_time = Carbon::now($timezone)->format('H:i:s');
+            return response()->json([
+                'city' => $city,
+                'time' => $current_time,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Invalid timezone'], 400);
+        }
     }
 }
